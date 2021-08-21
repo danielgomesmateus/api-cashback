@@ -12,6 +12,7 @@ class SaleView(ModelViewSet):
     queryset = Sale.objects.all()
     default_serializer_class = SaleSerializer
     http_method_names = ['post', 'get', 'patch', 'delete']
+    lookup_field = 'code'
     serializer_classes = {
         'list': SaleListSerializer,
         'retrieve': SaleListSerializer
@@ -20,17 +21,17 @@ class SaleView(ModelViewSet):
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, self.default_serializer_class)
 
-    def perform_create(self, serializer: object) -> object:
+    def perform_create(self, serializer: object):
         data = self.get_data(serializer)
         SaleRepository.create(serializer, data)
 
-    def perform_update(self, serializer: object) -> object:
+    def perform_update(self, serializer: object):
         if SaleService.get_status_from_instance(serializer.instance.status):
             raise APIException("The data for this sale cannot be changed", code=HTTP_400_BAD_REQUEST)
         data = self.get_data(serializer)
         SaleRepository.create(serializer, data)
 
-    def perform_destroy(self, instance: object) -> object:
+    def perform_destroy(self, instance: object):
         if SaleService.get_status_from_instance(instance.status):
             raise APIException("The data for this sale cannot be deleted", code=HTTP_400_BAD_REQUEST)
         SaleRepository.destroy()
