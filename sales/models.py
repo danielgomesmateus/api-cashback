@@ -7,7 +7,7 @@ class Sale(models.Model):
         ('EM_VALIDACAO', 'Em validação'),
     ]
 
-    code = models.CharField(max_length=32)
+    code = models.CharField(max_length=32, unique=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     cashback = models.DecimalField(max_digits=10, decimal_places=2)
     per_cent_cashback = models.IntegerField()
