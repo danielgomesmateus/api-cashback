@@ -2,11 +2,11 @@ from validate_docbr import CPF
 
 
 class ResellerService:
-    def __init__(self):
-        self.cpf = CPF()
+    @staticmethod
+    def validate_cpf(cpf: str) -> bool:
+        cpf_instance = CPF()
+        return cpf_instance.validate(cpf)
 
-    def validate_cpf(self, cpf) -> bool:
-        return self.cpf.validate(cpf)
-
-    def validate_password(self, password) -> bool:
+    @staticmethod
+    def validate_password(password: str) -> bool:
         return len(password) >= 6
