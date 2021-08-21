@@ -52,7 +52,7 @@ class SaleView(ModelViewSet):
 
 class CashbackView(APIView):
     @staticmethod
-    def get(request, cpf):
+    def get(request, cpf: str) -> object:
         if SaleService.validate_cpf_exists(cpf):
             cashback_service = CashbackService()
             cashback = cashback_service.get_value_cashback(cpf)
