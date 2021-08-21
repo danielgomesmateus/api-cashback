@@ -7,6 +7,7 @@ from resellers.api.serializers import ResellerSerializer
 class ResellerView(ModelViewSet):
     queryset = Reseller.objects.all()
     serializer_class = ResellerSerializer
+    http_method_names = ['post']
 
     def perform_create(self, serializer):
         instance = serializer.save()
