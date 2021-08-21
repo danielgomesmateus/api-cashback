@@ -5,13 +5,14 @@ from resellers.models import Reseller
 
 class SaleService:
     def __init__(self):
-        self.cpf = CPF()
         self.allowed_cpf = [
             '15350946056'
         ]
 
-    def validate_cpf_reseller(self, cpf: str) -> bool:
-        return self.cpf.validate(cpf)
+    @staticmethod
+    def validate_cpf_reseller(cpf: str) -> bool:
+        cpf_instance = CPF()
+        return cpf_instance.validate(cpf)
 
     @staticmethod
     def validate_cpf_exists(cpf: str) -> bool:
@@ -23,3 +24,20 @@ class SaleService:
     @staticmethod
     def get_status_from_instance(status: str) -> str:
         return status != "EM_VALIDACAO"
+
+    def get_value_cashback(self, amount: str) -> float:
+        per_cent = self.get_per_cent_cashback(amount)
+        amount = float(amount)
+        
+        return (amount * per_cent) / 100, per_cent
+
+    @staticmethod
+    def get_per_cent_cashback(amount: str) -> int:
+        amount = float(amount)
+
+        if amount < 1000:
+            return 10
+        elif 1000 <= amount <= 1500:
+            return 15
+        else:
+            return 20

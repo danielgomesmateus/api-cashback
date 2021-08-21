@@ -8,7 +8,9 @@ class Sale(models.Model):
     ]
 
     code = models.CharField(max_length=32)
-    amount = models.DecimalField(max_digits=5, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    cashback = models.DecimalField(max_digits=10, decimal_places=2)
+    per_cent_cashback = models.IntegerField()
     date = models.DateField()
     cpf_reseller = models.CharField(max_length=11)
     status = models.CharField(max_length=12, choices=STATUS)

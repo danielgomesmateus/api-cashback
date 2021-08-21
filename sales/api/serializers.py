@@ -13,6 +13,8 @@ class SaleListSerializer(ModelSerializer):
             'amount',
             'date',
             'status',
+            'cashback',
+            'per_cent_cashback',
         )
 
 
@@ -32,9 +34,7 @@ class SaleSerializer(ModelSerializer):
 
     @staticmethod
     def validate_cpf_reseller(value: str) -> str:
-        sale_service = SaleService()
-
-        if not sale_service.validate_cpf_reseller(value):
+        if not SaleService.validate_cpf_reseller(value):
             raise serializers.ValidationError('Enter a valid CPF without periods and hyphen')
         if not SaleService.validate_cpf_exists(value):
             raise serializers.ValidationError('There is no reseller associated with this CPF')

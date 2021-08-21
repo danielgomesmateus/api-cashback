@@ -21,11 +21,13 @@ class SaleView(ModelViewSet):
 
     def perform_create(self, serializer: object) -> object:
         cpf = serializer.initial_data.get('cpf_reseller')
+        amount = serializer.initial_data.get('amount')
 
         sale_service = SaleService()
         status = sale_service.get_status(cpf)
+        cashback, per_cent_cashback = sale_service.get_value_cashback(amount)
 
-        instance = serializer.save(status=status)
+        instance = serializer.save(status=status, cashback=cashback, per_cent_cashback=per_cent_cashback)
         instance.save()
 
     def perform_update(self, serializer: object) -> object:
