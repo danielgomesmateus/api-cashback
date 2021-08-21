@@ -24,10 +24,12 @@ from drf_yasg import openapi
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from resellers.api.urls import router as resellers_router
+from sales.api.urls import router as sales_router
 
 router = DefaultRouter()
 
 router.registry.extend(resellers_router.registry)
+router.registry.extend(sales_router.registry)
 
 schema_view = get_schema_view(
     openapi.Info(
