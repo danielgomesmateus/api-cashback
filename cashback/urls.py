@@ -26,6 +26,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from resellers.api.urls import router as resellers_router
 from sales.api.urls import router as sales_router
 
+from sales.views import CashbackView
+
 router = DefaultRouter()
 
 router.registry.extend(resellers_router.registry)
@@ -48,4 +50,5 @@ urlpatterns = [
     path('v1/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger'),
     path('v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('v1/cashback/<str:cpf>/', CashbackView.as_view(), name='cashback')
 ]
