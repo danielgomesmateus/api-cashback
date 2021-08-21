@@ -3,6 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from rest_framework.permissions import IsAuthenticated
 
 from sales.models import Sale
 from sales.api.serializers import SaleSerializer, SaleListSerializer
@@ -15,6 +16,7 @@ class SaleView(ModelViewSet):
     default_serializer_class = SaleSerializer
     http_method_names = ['post', 'get', 'patch', 'delete']
     lookup_field = 'code'
+    permission_classes = (IsAuthenticated,)
     serializer_classes = {
         'list': SaleListSerializer,
         'retrieve': SaleListSerializer
@@ -51,6 +53,8 @@ class SaleView(ModelViewSet):
 
 
 class CashbackView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     @staticmethod
     def get(request, cpf: str) -> object:
         if SaleService.validate_cpf_exists(cpf):
