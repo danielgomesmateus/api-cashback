@@ -5,6 +5,17 @@ from sales.models import Sale
 from sales.services import SaleService
 
 
+class SaleListSerializer(ModelSerializer):
+    class Meta:
+        model = Sale
+        fields = (
+            'code',
+            'amount',
+            'date',
+            'status',
+        )
+
+
 class SaleSerializer(ModelSerializer):
     status = serializers.SerializerMethodField()
 
