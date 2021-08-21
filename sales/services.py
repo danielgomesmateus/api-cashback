@@ -49,7 +49,7 @@ class CashbackService:
     def __init__(self):
         self.base_url = 'https://mdaqk8ek5j.execute-api.us-east-1.amazonaws.com/v1/'
 
-    def get_value_cashback(self, cpf):
+    def get_value_cashback(self, cpf: str) -> object:
         url = '{}cashback?cpf={}'.format(self.base_url, cpf)
         r = requests.get(url)
 
