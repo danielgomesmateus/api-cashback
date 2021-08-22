@@ -15,7 +15,7 @@ class SaleView(ModelViewSet):
     queryset = Sale.objects.all()
     default_serializer_class = SaleSerializer
     http_method_names = ['post', 'get', 'patch', 'delete']
-    lookup_field = 'code'
+    lookup_field = 'pk'
     permission_classes = (IsAuthenticated,)
     serializer_classes = {
         'list': SaleListSerializer,

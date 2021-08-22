@@ -3,10 +3,39 @@ from django.urls import reverse
 
 from resellers.models import Reseller
 from sales.views import SaleView, CashbackView
+from sales.models import Sale
 
 
 class SaleViewTestCase(TestCase):
-    pass
+    def setUp(self) -> None:
+        self.cpf_valid = '93367323071'
+        self.cpf_invalid = '93367783071'
+
+        reseller = Reseller(first_name='Luiza', last_name='Almeida', cpf='93367323071',
+                            email='luiza.almeida@gmail.com')
+        reseller.set_password('123456')
+        reseller.save()
+        Sale.objects.create(code='d41d8cd98f00b204e2000998ecf8427e', amount='320.98', cashback='32.10',
+                            per_cent_cashback='10', date='2020-10-22', cpf_reseller='93367323071',
+                            status='APROVADO')
+        Sale.objects.create(code='d41d8cd98f00b204e9800998ecf8427e', amount='320.98', cashback='32.10',
+                            per_cent_cashback='10', date='2020-10-22', cpf_reseller='93367323071',
+                            status='EM_VALIDACAO')
+
+        data = dict(email='luiza.almeida@gmail.com', password='123456')
+
+        self.client = Client()
+        response = self.client.post(reverse('token_obtain_pair'), data=data)
+        self.token = response.json().get('access')
+        self.bearer = {'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.token)}
+
+    def test_perform_delete_if_status_approve(self):
+        pass
+        # sale = Sale.objects.get(code='d41d8cd98f00b204e2000998ecf8427e')
+        #
+        # request = RequestFactory().delete(reverse('sales-detail', kwargs={'pk': sale.id}), **self.bearer)
+        # response = SaleView.as_view({'delete': 'destroy'})(request)
+        # self.assertEqual(response.status_code, 200)
 
 
 class CashbackViewTestCase(TestCase):

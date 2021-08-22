@@ -5,4 +5,4 @@ from sales.views import SaleView
 app_name = 'sales'
 
 router = SimpleRouter()
-router.register('sales', SaleView)
+router.register('sales', SaleView, basename='sales')
