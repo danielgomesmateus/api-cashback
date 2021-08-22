@@ -2,7 +2,7 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 
 from resellers.models import Reseller
-from resellers.service import ResellerService
+from resellers.services import ResellerService
 
 
 class ResellerSerializer(ModelSerializer):

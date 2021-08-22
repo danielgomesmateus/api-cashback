@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from resellers.service import ResellerService
+from resellers.services import ResellerService
 
 
 class ResellerServiceTestCase(TestCase):
