@@ -6,10 +6,13 @@ from sales.api.serializers import SaleSerializer
 
 class SaleSerializerTestCase(TestCase):
     def setUp(self):
-        self.cpf_valid = '21451036000'
+        self.cpf_valid = '88073923050'
         self.cpf_invalid = '21451074000'
-        Reseller.objects.create(first_name='Daniel', last_name='Gomes Mateus', cpf=self.cpf_valid,
-                                email='daniel.gomes@gmail.com')
+
+        reseller = Reseller(first_name='Daniel', last_name='Gomes Mateus', cpf='88073923050',
+                            email='daniel.gomes@gmail.com')
+        reseller.set_password('123456')
+        reseller.save()
         
     def test_sale_serializer_if_data_is_valid(self):
         data = dict(code='d41d8cd98f00b204e9800998ecf8427e', amount='1250.87', date='2015-12-24',

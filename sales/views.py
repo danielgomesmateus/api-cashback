@@ -2,7 +2,7 @@ from rest_framework.exceptions import APIException
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.permissions import IsAuthenticated
 
 from sales.models import Sale
@@ -60,5 +60,5 @@ class CashbackView(APIView):
         if SaleService.validate_cpf_exists(cpf):
             cashback_service = CashbackService()
             cashback = cashback_service.get_value_cashback(cpf)
-            return Response(data=cashback, status=HTTP_201_CREATED)
+            return Response(data=cashback, status=HTTP_200_OK)
         return Response(data={"message": "CPF not found"}, status=HTTP_400_BAD_REQUEST)
