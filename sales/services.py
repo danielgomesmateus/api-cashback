@@ -37,9 +37,9 @@ class SaleService:
     def get_per_cent_cashback(amount: str) -> int:
         amount = float(amount)
 
-        if amount < 1000:
+        if amount <= 1000:
             return 10
-        elif 1000 <= amount <= 1500:
+        elif 1001 <= amount <= 1500:
             return 15
         else:
             return 20

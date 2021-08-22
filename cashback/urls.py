@@ -40,7 +40,7 @@ schema_view = get_schema_view(
         description="API description",
         contact=openapi.Contact(email="contato@danielgmateus.com.br")
     ),
-    public=False,
+    public=True,
     permission_classes=(permissions.AllowAny,),
 )
 
