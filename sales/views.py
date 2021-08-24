@@ -15,7 +15,6 @@ class SaleView(ModelViewSet):
     queryset = Sale.objects.all()
     default_serializer_class = SaleSerializer
     http_method_names = ['post', 'get', 'patch', 'delete']
-    lookup_field = 'pk'
     permission_classes = (IsAuthenticated,)
     serializer_classes = {
         'list': SaleListSerializer,
@@ -38,7 +37,7 @@ class SaleView(ModelViewSet):
     def perform_destroy(self, instance: object):
         if SaleService.get_status_from_instance(instance.status):
             raise APIException("The data for this sale cannot be deleted")
-        SaleRepository.destroy()
+        SaleRepository.destroy(instance)
 
     @staticmethod
     def get_data(serializer: object) -> dict:

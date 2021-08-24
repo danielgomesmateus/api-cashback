@@ -1,5 +1,7 @@
 from django.test import TestCase, RequestFactory, Client
 from django.urls import reverse
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, \
+    HTTP_500_INTERNAL_SERVER_ERROR, HTTP_204_NO_CONTENT
 
 from resellers.models import Reseller
 from sales.views import SaleView, CashbackView
@@ -29,13 +31,33 @@ class SaleViewTestCase(TestCase):
         self.token = response.json().get('access')
         self.bearer = {'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.token)}
 
+    def test_perform_update_if_status_approve(self):
+        sale = Sale.objects.get(code='d41d8cd98f00b204e2000998ecf8427e')
+
+        request = RequestFactory().patch(reverse('sales-detail', kwargs={'pk': sale.id}), **self.bearer)
+        response = SaleView.as_view({'patch': 'partial_update'})(request, pk=sale.id)
+        self.assertEqual(response.status_code, HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def test_perform_update_if_status_in_validation(self):
+        sale = Sale.objects.get(code='d41d8cd98f00b204e9800998ecf8427e')
+
+        request = RequestFactory().patch(reverse('sales-detail', kwargs={'pk': sale.id}), **self.bearer)
+        response = SaleView.as_view({'patch': 'partial_update'})(request, pk=sale.id)
+        self.assertEqual(response.status_code, HTTP_200_OK)
+
     def test_perform_delete_if_status_approve(self):
-        pass
-        # sale = Sale.objects.get(code='d41d8cd98f00b204e2000998ecf8427e')
-        #
-        # request = RequestFactory().delete(reverse('sales-detail', kwargs={'pk': sale.id}), **self.bearer)
-        # response = SaleView.as_view({'delete': 'destroy'})(request)
-        # self.assertEqual(response.status_code, 200)
+        sale = Sale.objects.get(code='d41d8cd98f00b204e2000998ecf8427e')
+
+        request = RequestFactory().delete(reverse('sales-detail', kwargs={'pk': sale.id}), **self.bearer)
+        response = SaleView.as_view({'delete': 'destroy'})(request, pk=sale.id)
+        self.assertEqual(response.status_code, HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def test_perform_delete_if_status_in_validation(self):
+        sale = Sale.objects.get(code='d41d8cd98f00b204e9800998ecf8427e')
+
+        request = RequestFactory().delete(reverse('sales-detail', kwargs={'pk': sale.id}), **self.bearer)
+        response = SaleView.as_view({'delete': 'destroy'})(request, pk=sale.id)
+        self.assertEqual(response.status_code, HTTP_204_NO_CONTENT)
 
 
 class CashbackViewTestCase(TestCase):
@@ -59,14 +81,14 @@ class CashbackViewTestCase(TestCase):
     def test_get_if_user_is_not_authenticated(self):
         request = RequestFactory().get(reverse('cashback', args={'cpf': self.cpf_valid}))
         response = CashbackView.as_view()(request, self.cpf_valid)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
 
     def test_get_if_user_is_authenticated(self):
         request = RequestFactory().get(reverse('cashback', kwargs={'cpf': self.cpf_valid}), **self.bearer)
         response = CashbackView.as_view()(request, self.cpf_valid)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTP_200_OK)
 
     def test_get_if_cpf_is_invalid(self):
         request = RequestFactory().get(reverse('cashback', kwargs={'cpf': self.cpf_invalid}), **self.bearer)
         response = CashbackView.as_view()(request, self.cpf_invalid)
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
