@@ -4,7 +4,7 @@ API desenvolvida com Django Rest, MYSQL e Docker.
 
 ## Instalação
 
-Primeiro passo é ter instalado o [Docker](https://www.docker.com/). Como ele iremos iniciar a aplicação e base de 
+Primeiro passo é ter instalado o [Docker](https://www.docker.com/). Com ele iremos iniciar a aplicação e base de 
 dados do projeto.
 
 ## Endpoints da API
