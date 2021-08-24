@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from rest_framework.routers import DefaultRouter
 from rest_framework import permissions
@@ -52,3 +54,6 @@ urlpatterns = [
     path('v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('v1/cashback/<str:cpf>/', CashbackView.as_view(), name='cashback')
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
