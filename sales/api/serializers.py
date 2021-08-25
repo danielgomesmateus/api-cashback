@@ -9,6 +9,7 @@ class SaleListSerializer(ModelSerializer):
     class Meta:
         model = Sale
         fields = (
+            'id',
             'code',
             'amount',
             'date',

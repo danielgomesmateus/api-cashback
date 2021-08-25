@@ -25,13 +25,13 @@ class SaleView(ModelViewSet):
         return self.serializer_classes.get(self.action, self.default_serializer_class)
 
     def perform_create(self, serializer: object):
-        data = self.get_data(serializer)
+        data = self.get_data(serializer.initial_data.get('cpf_reseller'), serializer.initial_data.get('amount'))
         SaleRepository.create(serializer, data)
 
     def perform_update(self, serializer: object):
         if SaleService.get_status_from_instance(serializer.instance.status):
             raise APIException("The data for this sale cannot be changed")
-        data = self.get_data(serializer)
+        data = self.get_data(serializer.instance.cpf_reseller, serializer.instance.amount)
         SaleRepository.create(serializer, data)
 
     def perform_destroy(self, instance: object):
@@ -40,10 +40,7 @@ class SaleView(ModelViewSet):
         SaleRepository.destroy(instance)
 
     @staticmethod
-    def get_data(serializer: object) -> dict:
-        cpf = serializer.instance.cpf_reseller
-        amount = serializer.instance.amount
-
+    def get_data(cpf: str, amount: str) -> dict:
         sale_service = SaleService()
         status = sale_service.get_status(cpf)
         cashback, per_cent_cashback = sale_service.get_value_cashback(amount)
