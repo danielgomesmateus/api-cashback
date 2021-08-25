@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'db_cashback',
         'USER': 'root',
         'PASSWORD': 'password',
-        'HOST': '172.22.0.1'
+        'HOST': 'db'
     }
 }
 

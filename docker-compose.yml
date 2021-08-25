@@ -2,22 +2,22 @@ version: '3'
 
 services:
 
-#  app:
-#    build: .
-#    container_name: app
-#    restart: always
-#    command:
-#      - sh
-#      - -c
-#      - "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn cashback.wsgi:application --bind 0.0.0.0:8000 --reload"
-#    ports:
-#      - '8000:8000'
-#    links:
-#      - db
-#    depends_on:
-#      - db
-#    volumes:
-#      - ".:/app/code"
+  app:
+    build: .
+    container_name: app
+    restart: always
+    command:
+      - sh
+      - -c
+      - "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn cashback.wsgi:application --bind 0.0.0.0:8000 --reload"
+    ports:
+      - '8000:8000'
+    links:
+      - db
+    depends_on:
+      - db
+    volumes:
+      - ".:/app/code"
   db:
     image: mysql:8
     container_name: db
